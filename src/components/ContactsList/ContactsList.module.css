@@ -1,0 +1,28 @@
+.contactsList {
+}
+.contactItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.contactItem:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.contact {
+}
+.btnList {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  outline: none;
+  border: 1px solid grey;
+}
+
+.btnList:hover,
+.btnList:focus {
+  background-color: rgb(49, 148, 209);
+  border: 1px solid rgb(49, 148, 209);
+  color: #fff;
+}
