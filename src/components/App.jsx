@@ -14,7 +14,9 @@ const App = () => {
   ];
 
   const [contacts, setContacts] = useState(() => {
-    return window.localStorage.getItem('contacts') ?? exampleContacts;
+    return (
+      JSON.parse(window.localStorage.getItem('contacts')) ?? exampleContacts
+    );
   });
 
   const [filter, setFilter] = useState('');
@@ -23,41 +25,42 @@ const App = () => {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  const addContact = (name, number) => {
+  const addContact = ({ id, name, number }) => {
     const contact = {
       id: nanoid(10),
       name,
       number,
     };
-    const normalName = name.toLowerCase();
-    const isNameInList = contacts.some(contact =>
-      contact.name.toLowerCase().includes(normalName)
+    const normalize = name.toLowerCase();
+    const isNameInList = contacts.find(
+      contact => contact.name.toLowerCase() === normalize
     );
 
     if (isNameInList) {
       alert(`${name} is already in contacts.`);
       return;
     }
-    setContacts(prevState => [contact, ...prevState]);
-  };
 
-  const searchContact = () => {
-    const normalName = filter.toLowerCase();
-    let search = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalName)
-    );
-    return search;
-  };
-  const filterContact = e => {
-    setFilter(e.currentTarget.value);
+    setContacts(prevContacts => [contact, ...prevContacts]);
   };
 
   const deleteContact = contactId => {
     setContacts(prevState =>
-      prevState.contacts.filter(contact => contact.id !== contactId)
+      prevState.filter(contact => contact.id !== contactId)
     );
-    setFilter('');
   };
+
+  const searchContact = () => {
+    if (!filter) {
+      return contacts;
+    }
+    const normalName = filter.toLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalName)
+    );
+  };
+
+  const filterContact = ({ target }) => setFilter(target.value);
 
   const filteredList = searchContact();
   return (
