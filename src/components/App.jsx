@@ -31,6 +31,7 @@ const App = () => {
       name,
       number,
     };
+
     const normalize = name.toLowerCase();
     const isNameInList = contacts.find(
       contact => contact.name.toLowerCase() === normalize
@@ -54,9 +55,9 @@ const App = () => {
     if (!filter) {
       return contacts;
     }
-    const normalName = filter.toLowerCase();
+    const normalize = filter.toLowerCase();
     return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(normalName)
+      name.toLowerCase().includes(normalize)
     );
   };
 
